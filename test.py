@@ -8,7 +8,7 @@ from chronopost_python_sdk.ChronopostService import ChronopostService
 
 class ChronopostTest(unittest.TestCase):
     def setUp(self):
-        self.chronopost_service = ChronopostService(username="024961", password="X024961X")
+        self.chronopost_service = ChronopostService(username="*", password="*")
 
     def tearDown(self):
         pass

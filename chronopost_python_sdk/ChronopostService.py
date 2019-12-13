@@ -1,6 +1,5 @@
 import zeep
 import requests
-import xml.etree.ElementTree as et
 import xmltodict
 from chronopost_python_sdk import Delivery
 
@@ -45,14 +44,13 @@ def create_xml_string(data):
 
 class ChronopostService:
 
-    def __init__(self, username, password, tipoEtiqueta=0,
+    def __init__(self, username, password, email, tipoEtiqueta=0,
                  tipoResposta=1, enviarEmail=1,
                  wsdl='https://cliente.chronopost.pt:10003/Services/Services.asmx?wsdl'):
         self.client = zeep.Client(wsdl=wsdl)
         self.username = username
         self.password = password
-        # self.email = 'laboratorio@youpii.pt'
-        self.email = 'rosado_andre@live.com.pt'
+        self.email = email
         self.tipoEtiqueta = tipoEtiqueta
         self.tipoResposta = tipoResposta
         self.enviarEmail = enviarEmail
