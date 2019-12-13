@@ -16,15 +16,16 @@ class ChronopostTest(unittest.TestCase):
     def testGetResult(self):
         today = datetime.datetime(2029, 12, 4)
 
-        delivery = Delivery(OrigemMoradaNome='rafik', OrigemMoradaLinha1='Rua xyz', OrigemMoradaCodigoPostal='1234-123',
+        delivery = Delivery(OrigemMoradaNome='rafik', OrigemMorada='Lorem ipsum dolor sit amet, consectetuer adipiscin', OrigemMoradaCodigoPostal='1234-123',
                             OrigemMoradaLocalidade='Lisboa', OrigemEmail='sloth577@gmail.com',
                             DestinoMoradaNome='andre', DestinoMoradaCodigoPostal='7080-038', DestinoMoradaLocalidade='Vendas Novas',
-                            DestinoMoradaLinha1='Rua JFF', NumeroVolumes=1, DataExpedicao=today)
+                            DestinoMorada='Lorem ipsum dolor sit amet, consectetuer adipiscin', NumeroVolumes=1, DataExpedicao=today)
 
         self.assertIsNotNone(delivery)
         self.assertEqual(delivery.Conta, '02496101')
         self.assertEqual(delivery.OrigemMoradaNome, 'rafik')
         self.assertEqual(delivery.OrigemMoradaLinha1, 'Rua xyz')
+        self.assertEqual(delivery.OrigemMoradaLinha2, 'Rua xyz')
         self.assertEqual(delivery.OrigemMoradaCodigoPostal, '1234-123')
         self.assertEqual(delivery.OrigemMoradaLocalidade, 'Lisboa')
         self.assertEqual(delivery.OrigemMoradaPais, 'PT')
@@ -46,6 +47,22 @@ class ChronopostTest(unittest.TestCase):
         self.assertIn('Descricao', response_json)
         self.assertIn('NrGuia', response_json)
         self.assertIn('CorpoResposta', response_json)
+
+    def testDispatch(self):
+        tomorrow = datetime.datetime.today() + datetime.timedelta(days=1)
+
+        delivery = Delivery(OrigemMoradaNome='rafik', OrigemMorada='Lorem ipsum dolor sit amet, consectetuer adipiscin',
+                            OrigemMoradaCodigoPostal='1234-123',
+                            OrigemMoradaLocalidade='Lisboa', OrigemEmail='sloth577@gmail.com',
+                            DestinoMoradaNome='andre', DestinoMoradaCodigoPostal='7080-038',
+                            DestinoMoradaLocalidade='Vendas Novas',
+                            DestinoMorada='Lorem ipsum dolor sit amet, consectetuer adipiscin', NumeroVolumes=1,
+                            DataExpedicao=tomorrow)
+
+        result = self.chronopost_service.dispatch(delivery)
+
+        self.assertIsNotNone(result)
+
 
     def testRequest(self):
         url = 'http://cliente.chronopost.pt:10002/Services/Services.asmx'
